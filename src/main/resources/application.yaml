@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://docker:mongopw@localhost:55000
+      uuid-representation: standard
+      authentication-database: admin
+      database: CasePix
