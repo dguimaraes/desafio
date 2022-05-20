@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.itau.casepix.services.impl.KeyPixServiceImplTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-05-20T04:14:57" hostname="MacBook-Air-de-Danilo.local" time="5.175">
+  <properties/>
+  <testcase name="create_duplicate_key_pix()" classname="com.itau.casepix.services.impl.KeyPixServiceImplTest" time="5.175"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

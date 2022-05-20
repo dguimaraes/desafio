@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KeyPixServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">casepix</a> &gt; <a href="index.source.html" class="el_package">com.itau.casepix.services.impl</a> &gt; <span class="el_source">KeyPixServiceImpl.java</span></div><h1>KeyPixServiceImpl.java</h1><pre class="source lang-java linenums">package com.itau.casepix.services.impl;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.itau.casepix.dtos.request.FilterKeyPix;
+import com.itau.casepix.dtos.request.KeyPixPatchDto;
+import com.itau.casepix.dtos.request.KeyPixPostDto;
+import com.itau.casepix.dtos.response.ResponseCreatedDto;
+import com.itau.casepix.dtos.response.ResponseGetDto;
+import com.itau.casepix.dtos.response.ResponseUpdatedDto;
+import com.itau.casepix.exceptions.DuplicateKeyPixException;
+import com.itau.casepix.exceptions.NotFoundException;
+import com.itau.casepix.mappers.KeyPixMapper;
+import com.itau.casepix.repositories.KeyPixRepository;
+import com.itau.casepix.services.KeyPixService;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+public class KeyPixServiceImpl implements KeyPixService {
+
+    private final KeyPixRepository keyPixRepository;
+    private final KeyPixMapper keyPixMapper;
+
+    private final ObjectMapper objectMapper;
+
+<span class="fc" id="L33">    public KeyPixServiceImpl(final KeyPixRepository keyPixRepository, final KeyPixMapper keyPixMapper) {</span>
+<span class="fc" id="L34">        this.keyPixRepository = keyPixRepository;</span>
+<span class="fc" id="L35">        this.keyPixMapper = keyPixMapper;</span>
+<span class="fc" id="L36">        this.objectMapper = JsonMapper.builder().findAndAddModules().build();;</span>
+<span class="fc" id="L37">    }</span>
+
+    public ResponseCreatedDto create(final @Valid KeyPixPostDto keyPixPostDto) throws DuplicateKeyPixException {
+        try {
+<span class="nc" id="L41">            return keyPixMapper.toResponseCreatedDto(keyPixRepository.save(keyPixMapper.toEntity(keyPixPostDto)));</span>
+<span class="fc" id="L42">        } catch (DuplicateKeyException dex) {</span>
+<span class="fc" id="L43">            throw new DuplicateKeyPixException(&quot;Duplicate KeyPix value&quot;);</span>
+        }
+    }
+
+    @Override
+    public ResponseUpdatedDto update(UUID id, KeyPixPatchDto keyPixPatchDto) {
+<span class="nc" id="L49">        var updateDto = keyPixMapper.toEntityUpdate(keyPixPatchDto);</span>
+<span class="nc" id="L50">        HashMap&lt;? extends Object, ? extends Object&gt; mapUpdate = objectMapper.convertValue(updateDto, HashMap.class);</span>
+
+<span class="nc" id="L52">        return keyPixMapper.toResponseUpdatedDto(keyPixRepository.upsert(id, mapUpdate));</span>
+    }
+
+    @Override
+    public ResponseGetDto findById(UUID id) throws NotFoundException {
+<span class="nc" id="L57">        return keyPixMapper.toResponseGetDto(keyPixRepository.findById(id).orElseThrow(() -&gt; new NotFoundException(&quot;Chave não encontrada&quot;)));</span>
+    }
+
+    @Override
+    public List&lt;ResponseGetDto&gt; findByFilter(FilterKeyPix filterKeyPix) throws NotFoundException {
+<span class="nc" id="L62">        HashMap&lt;String, Object&gt; mapFilter = objectMapper.convertValue(filterKeyPix, HashMap.class);</span>
+<span class="nc" id="L63">        var listKeyPix = keyPixRepository.filterBy(mapFilter);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (listKeyPix.isEmpty()) throw new NotFoundException(&quot;Chave não encontrada&quot;);</span>
+<span class="nc" id="L65">        return listKeyPix.stream().map(keyPixMapper::toResponseGetDto).collect(Collectors.toList());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -4,6 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -12,8 +13,8 @@ public class BaseEntity {
     @Id
     private UUID id;
 
-    private OffsetDateTime createdDate;
-    private OffsetDateTime updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
     public UUID getId() {
         return id;
@@ -23,24 +24,25 @@ public class BaseEntity {
         this.id = id;
     }
 
-    public OffsetDateTime getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(OffsetDateTime createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public OffsetDateTime getUpdatedDate() {
+    public LocalDateTime getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(OffsetDateTime updatedDate) {
-        this.updatedDate = OffsetDateTime.now();
+    public void setUpdatedDate() {
+        this.updatedDate = LocalDateTime.now();
     }
 
     public BaseEntity() {
         this.id = UUID.randomUUID();;
-        this.createdDate = OffsetDateTime.now();
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }

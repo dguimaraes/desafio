@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KeyPixController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">casepix</a> &gt; <a href="index.source.html" class="el_package">com.itau.casepix.controllers</a> &gt; <span class="el_source">KeyPixController.java</span></div><h1>KeyPixController.java</h1><pre class="source lang-java linenums">package com.itau.casepix.controllers;
+
+import com.itau.casepix.dtos.request.FilterKeyPix;
+import com.itau.casepix.dtos.request.KeyPixPatchDto;
+import com.itau.casepix.dtos.request.KeyPixPostDto;
+import com.itau.casepix.exceptions.DuplicateKeyPixException;
+import com.itau.casepix.exceptions.NotFoundException;
+import com.itau.casepix.services.KeyPixService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.UUID;
+
+@RestController
+public class KeyPixController {
+
+    private static final String APPLICATION_JSON_VALUE = &quot;application/json&quot;;
+    private final KeyPixService keyPixService;
+
+<span class="nc" id="L21">    public KeyPixController(final KeyPixService keyPixService) {</span>
+<span class="nc" id="L22">        this.keyPixService = keyPixService;</span>
+<span class="nc" id="L23">    }</span>
+
+    @PostMapping
+    public ResponseEntity create(@Valid @RequestBody final KeyPixPostDto requestBody) throws DuplicateKeyPixException {
+<span class="nc" id="L27">        return ResponseEntity.ok().body(keyPixService.create(requestBody));</span>
+    }
+
+    @PatchMapping
+    public ResponseEntity update(@RequestParam final UUID id, @Valid @RequestBody KeyPixPatchDto requestBody) {
+<span class="nc" id="L32">        return ResponseEntity.ok().body(keyPixService.update(id, requestBody));</span>
+    }
+
+    @GetMapping(value = &quot;/find-by-id&quot;)
+    public ResponseEntity getById(@RequestParam final UUID id) throws NotFoundException {
+<span class="nc" id="L37">        return ResponseEntity.ok().body(keyPixService.findById(id));</span>
+    }
+
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity filter(@Valid @ModelAttribute final FilterKeyPix filterKeyPix) throws NotFoundException {
+<span class="nc" id="L42">        return ResponseEntity.ok().body(keyPixService.findByFilter(filterKeyPix));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

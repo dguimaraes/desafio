@@ -1,8 +1,11 @@
 package com.itau.casepix.entities;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class KeyPix extends BaseEntity{
 
-    private String keyType;
+    private EnumKeyType keyType;
     private String keyValue;
     private String accountType;
     private String agencyNumber;
@@ -10,7 +13,7 @@ public class KeyPix extends BaseEntity{
     private String clientName;
     private String clientLastName;
 
-    public KeyPix(final String keyType, final String keyValue, final String accountType, final String agencyNumber, final String accountNumber, final String clientName, final String clientLastName) {
+    public KeyPix(final EnumKeyType keyType, final String keyValue, final String accountType, final String agencyNumber, final String accountNumber, final String clientName, final String clientLastName) {
         this.keyType = keyType;
         this.keyValue = keyValue;
         this.accountType = accountType;
@@ -20,7 +23,7 @@ public class KeyPix extends BaseEntity{
         this.clientLastName = clientLastName;
     }
 
-    public String getKeyType() {
+    public EnumKeyType getKeyType() {
         return keyType;
     }
 

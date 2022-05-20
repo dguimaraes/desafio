@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KeyPixRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">casepix</a> &gt; <a href="index.source.html" class="el_package">com.itau.casepix.repositories.impl</a> &gt; <span class="el_source">KeyPixRepositoryImpl.java</span></div><h1>KeyPixRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.itau.casepix.repositories.impl;
+
+import com.itau.casepix.entities.KeyPix;
+import com.itau.casepix.repositories.KeyPixCustomRepository;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+public class KeyPixRepositoryImpl implements KeyPixCustomRepository {
+
+    private MongoOperations mongoOperations;
+
+    private final static String INACTIVE = &quot;inactive&quot;;
+
+<span class="nc" id="L21">    public KeyPixRepositoryImpl(MongoOperations mongoOperations) {</span>
+<span class="nc" id="L22">        this.mongoOperations = mongoOperations;</span>
+<span class="nc" id="L23">    }</span>
+
+    @Override
+    public List&lt;KeyPix&gt; filterBy(HashMap&lt;String, Object&gt; filter) {
+<span class="nc" id="L27">        var query = new Query();</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        filter.entrySet().stream().filter(f -&gt; f.getValue() != null).forEach((entry) -&gt; {</span>
+<span class="nc" id="L29">            query.addCriteria(Criteria.where(entry.getKey()).is(entry.getValue()));</span>
+<span class="nc" id="L30">        });</span>
+
+<span class="nc" id="L32">        return mongoOperations.find(query, KeyPix.class);</span>
+    }
+
+    @Override
+    public KeyPix upsert(UUID id, Map mapPut) {
+<span class="nc" id="L37">        var query = new Query();</span>
+<span class="nc" id="L38">        query.addCriteria(Criteria.where(&quot;_id&quot;).is(id))</span>
+<span class="nc" id="L39">                .addCriteria(Criteria.where(&quot;status&quot;).ne(INACTIVE));</span>
+<span class="nc" id="L40">        var update = new Update();</span>
+
+<span class="nc" id="L42">        mapPut.forEach((key, value) -&gt; update.set(String.valueOf(key), value));</span>
+<span class="nc" id="L43">        update.currentDate(&quot;updatedDate&quot;);</span>
+<span class="nc" id="L44">        mongoOperations.upsert(query, update, KeyPix.class);</span>
+
+<span class="nc" id="L46">        return mongoOperations.findOne(query, KeyPix.class);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

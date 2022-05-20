@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FilterKeyPix.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">casepix</a> &gt; <a href="index.source.html" class="el_package">com.itau.casepix.dtos.request</a> &gt; <span class="el_source">FilterKeyPix.java</span></div><h1>FilterKeyPix.java</h1><pre class="source lang-java linenums">package com.itau.casepix.dtos.request;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.itau.casepix.dtos.EnumKeyTypeDto;
+import com.itau.casepix.entities.EnumKeyType;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+public class FilterKeyPix {
+
+    @Schema(implementation = EnumKeyType.class)
+    private EnumKeyTypeDto keyType;
+
+    @Size(max = 4)
+    @Pattern(regexp=&quot;^\\d+$&quot;, message=&quot;Agência precisa ser um número&quot;)
+    private String agencyNumber;
+
+    @Size(max = 8)
+    @Pattern(regexp=&quot;^\\d+$&quot;, message=&quot;Número da conta precisa conter somente número&quot;)
+    private String accountNumber;
+
+    @Size(max = 30)
+    private String clientName;
+
+<span class="nc" id="L27">    public FilterKeyPix(EnumKeyTypeDto keyType, String agencyNumber, String accountNumber, String clientName) {</span>
+<span class="nc" id="L28">        this.keyType = keyType;</span>
+<span class="nc" id="L29">        this.agencyNumber = agencyNumber;</span>
+<span class="nc" id="L30">        this.accountNumber = accountNumber;</span>
+<span class="nc" id="L31">        this.clientName = clientName;</span>
+<span class="nc" id="L32">    }</span>
+
+    public void setKeyType(EnumKeyTypeDto keyType) {
+<span class="nc" id="L35">        this.keyType = keyType;</span>
+<span class="nc" id="L36">    }</span>
+
+    public void setAgencyNumber(String agencyNumber) {
+<span class="nc" id="L39">        this.agencyNumber = agencyNumber;</span>
+<span class="nc" id="L40">    }</span>
+
+    public void setAccountNumber(String accountNumber) {
+<span class="nc" id="L43">        this.accountNumber = accountNumber;</span>
+<span class="nc" id="L44">    }</span>
+
+    public void setClientName(String clientName) {
+<span class="nc" id="L47">        this.clientName = clientName;</span>
+<span class="nc" id="L48">    }</span>
+
+    public EnumKeyTypeDto getKeyType() {
+<span class="nc" id="L51">        return keyType;</span>
+    }
+
+    public String getAgencyNumber() {
+<span class="nc" id="L55">        return agencyNumber;</span>
+    }
+
+    public String getAccountNumber() {
+<span class="nc" id="L59">        return accountNumber;</span>
+    }
+
+    public String getClientName() {
+<span class="nc" id="L63">        return clientName;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
